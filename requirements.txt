@@ -1,4 +1,3 @@
-io
 docx2pdf
 streamlit
 docxtpl
