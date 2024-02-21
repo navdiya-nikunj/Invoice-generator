@@ -1,4 +1,4 @@
 docx2pdf
 streamlit
 docxtpl
-pywin32
+pypiwin32==223
