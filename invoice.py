@@ -2,14 +2,15 @@ import pandas as pd
 from docxtpl import DocxTemplate
 import streamlit as st
 from docx2pdf import convert
-import io  # For byte conversion
-# from pywin32 import pythoncom
+# import io  # For byte conversion
+# from spire.doc import *
+import subprocess
+
 
 @st.cache_data
 def generate_invoice(input_data, template):
     try:
         container = st.container(border=True)
-        # pythoncom.CoInitialize()
         if input_data and template:
             df = pd.read_excel(input_data,engine='openpyxl')
             tpl = DocxTemplate(template)
@@ -18,11 +19,14 @@ def generate_invoice(input_data, template):
             for i, row in df.iterrows():
                 tpl.render(row.to_dict())
                 tpl.save(f'invoice_{i}.docx')
-                with io.BytesIO() as buffer:
-                    tpl.save(buffer)
-                    invoice_bytes = buffer.getvalue()
+                # with io.BytesIO() as buffer:
+                #     tpl.save(buffer)
+                #     invoice_bytes = buffer.getvalue()
 
-                data = convert(f'invoice_{i}.docx')
+                subprocess.run(["libreoffice", "--convert-to", "pdf", f"invoice_{i}.docx", "--headless", "--convert-to", "pdf"])
+
+
+                # data = convert(f'invoice_{i}.docx')
                 container.download_button(
                 label=f"Download Invoice_{i}.pdf",
                 data= open(f'invoice_{i}.pdf', 'rb').read(),
