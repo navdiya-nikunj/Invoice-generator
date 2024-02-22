@@ -3,13 +3,13 @@ from docxtpl import DocxTemplate
 import streamlit as st
 from docx2pdf import convert
 import io  # For byte conversion
-import pythoncom
+# from pywin32 import pythoncom
 
 @st.cache_data
 def generate_invoice(input_data, template):
     try:
         container = st.container(border=True)
-        pythoncom.CoInitialize()
+        # pythoncom.CoInitialize()
         if input_data and template:
             df = pd.read_excel(input_data,engine='openpyxl')
             tpl = DocxTemplate(template)
