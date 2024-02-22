@@ -1,12 +1,12 @@
 import pandas as pd
 from docxtpl import DocxTemplate
 import streamlit as st
-# import io  # For byte conversion
+import io  # For byte conversion
 # from spire.doc import *
-import subprocess
+# import subprocess
 
 
-@st.cache_data
+@st.cache_data(experimental_allow_widgets=True)
 def generate_invoice(input_data, template):
     try:
         container = st.container(border=True)
@@ -18,18 +18,20 @@ def generate_invoice(input_data, template):
             for i, row in df.iterrows():
                 tpl.render(row.to_dict())
                 tpl.save(f'invoice_{i}.docx')
-                # with io.BytesIO() as buffer:
-                #     tpl.save(buffer)
-                #     invoice_bytes = buffer.getvalue()
+                with io.BytesIO() as buffer:
+                    tpl.save(buffer)
+                    invoice_bytes = buffer.getvalue()
 
-                subprocess.run(["libreoffice", "--convert-to", "pdf", f"invoice_{i}.docx", "--headless", "--convert-to", "pdf"])
+                # os.remove(f'invoice_{i}.docx')
+
+                # subprocess.run(["libreoffice", "--convert-to", "pdf", f"invoice_{i}.docx", "--headless", "--convert-to", "pdf"])
 
 
                 # data = convert(f'invoice_{i}.docx')
                 container.download_button(
-                label=f"Download Invoice_{i}.pdf",
-                data= open(f'invoice_{i}.pdf', 'rb').read(),
-                file_name=f'invoice_{i}.pdf'
+                label=f"Download Invoice_{i}.docx",
+                data= open(f'invoice_{i}.docx', 'rb').read(),
+                file_name=f'invoice_{i}.docx'
                 )
             container.write('Invoices generated successfully!')
             # container.write('refresh to generate more invoices.')
