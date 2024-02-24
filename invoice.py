@@ -47,6 +47,7 @@ if __name__ == '__main__':
     st.write('This app generates invoices from an Excel file and a Word template.')
     input_data = st.file_uploader('Upload the Excel file', type='xlsx')
     template = st.file_uploader('Upload the Word template', type='docx')
+    st.link_button("Read the documentation","https://github.com/navdiya-nikunj/Invoice-generator/blob/main/README.md")
     # st.write('Click the button below to generate the invoices.')
     # st.button('Generate Invoices', on_click=handleClick)
     generate_invoice(input_data, template)
