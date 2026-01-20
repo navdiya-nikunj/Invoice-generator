@@ -6,7 +6,7 @@ import io  # For byte conversion
 # import subprocess
 
 
-@st.cache_data(experimental_allow_widgets=True)
+@st.cache_data()
 def generate_invoice(input_data, template):
     try:
         container = st.container(border=True)
